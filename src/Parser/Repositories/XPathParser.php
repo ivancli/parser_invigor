@@ -16,12 +16,12 @@ class XPathParser implements ParserContract
 {
     protected $content;
     protected $options;
-    protected $extractions;
+    protected $extractions = [];
 
     /**
      * set content property
      * @param $content
-     * @return mixed
+     * @return void
      */
     public function setContent($content)
     {
@@ -31,7 +31,7 @@ class XPathParser implements ParserContract
     /**
      * set options property needed for extraction.
      * @param $options
-     * @return mixed
+     * @return void
      */
     public function setOptions($options)
     {
@@ -44,16 +44,16 @@ class XPathParser implements ParserContract
      */
     public function extract()
     {
+
         $xpath = $this->options['xpath'];
         if (isset($xpath) && !empty($xpath)) {
-            $crawler = new Crawler($this->content);
-            $xpathNodes = $crawler->filterXPath($xpath);
-            $extractions = [];
-            foreach ($xpathNodes as $xpathNode) {
-                $extraction = $xpathNode->text();
-                $extractions[] = $extraction;
+            if (is_array($xpath)) {
+                foreach ($xpath as $xp) {
+                    $extractions [] = $this->$this->__extract($xp);
+                }
+            } else {
+                $extractions [] = $this->__extract($xpath);
             }
-            $this->extractions = $extractions;
         }
         return null;
     }
@@ -61,5 +61,17 @@ class XPathParser implements ParserContract
     public function getExtractions()
     {
         return $this->extractions;
+    }
+
+    private function __extract($xpath)
+    {
+        $crawler = new Crawler($this->content);
+        $xpathNodes = $crawler->filterXPath($xpath);
+        $extractions = [];
+        foreach ($xpathNodes as $xpathNode) {
+            $extraction = $xpathNode->text();
+            $extractions[] = $extraction;
+        }
+        return $extractions;
     }
 }
