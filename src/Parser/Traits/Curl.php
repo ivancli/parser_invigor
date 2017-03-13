@@ -1,5 +1,5 @@
 <?php
-namespace IvanCLI\Chargify\Traits;
+namespace IvanCLI\Parser\Traits;
 /**
  * Created by PhpStorm.
  * User: Ivan

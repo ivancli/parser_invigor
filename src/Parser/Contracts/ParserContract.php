@@ -6,7 +6,7 @@
  * Time: 3:23 PM
  */
 
-namespace IvanCLI\Crawler\Contracts;
+namespace IvanCLI\Parser\Contracts;
 
 
 interface ParserContract

@@ -9,7 +9,7 @@
 namespace IvanCLI\Parser\Repositories;
 
 
-use IvanCLI\Crawler\Contracts\ParserContract;
+use IvanCLI\Parser\Contracts\ParserContract;
 use Symfony\Component\DomCrawler\Crawler;
 
 class XPathParser implements ParserContract
