@@ -1,0 +1,29 @@
+{
+    "name": "ivancli/parser",
+    "description": "Parser repository for extracting content from given content",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ivan Li",
+            "email": "ivan.li@hotmail.com"
+        }
+    ],
+    "type": "library",
+    "require": {
+        "php": ">=5.5.0",
+        "illuminate/cache": "~5.0",
+        "laravel/framework": "5.*.*"
+    },
+    "keywords":[
+        "parser",
+        "xpath",
+        "parsing",
+        "laravel"
+    ],
+    "autoload": {
+        "psr-4": {
+            "IvanCLI\\Parser\\": "src/Parser/"
+        }
+    },
+    "minimum-stability": "dev"
+}

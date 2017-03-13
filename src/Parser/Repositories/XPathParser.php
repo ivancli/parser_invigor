@@ -1,0 +1,65 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: ivan.li
+ * Date: 3/13/2017
+ * Time: 4:27 PM
+ */
+
+namespace IvanCLI\Parser\Repositories;
+
+
+use IvanCLI\Crawler\Contracts\ParserContract;
+use Symfony\Component\DomCrawler\Crawler;
+
+class XPathParser implements ParserContract
+{
+    protected $content;
+    protected $options;
+    protected $extractions;
+
+    /**
+     * set content property
+     * @param $content
+     * @return mixed
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * set options property needed for extraction.
+     * @param $options
+     * @return mixed
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+    }
+
+    /**
+     * extract data from provided content
+     * @return mixed
+     */
+    public function extract()
+    {
+        $xpath = $this->options['xpath'];
+        if (isset($xpath) && !empty($xpath)) {
+            $crawler = new Crawler($this->content);
+            $xpathNodes = $crawler->filterXPath($xpath);
+            $extractions = [];
+            foreach ($xpathNodes as $xpathNode) {
+                $extraction = $xpathNode->text();
+                $extractions[] = $extraction;
+            }
+            $this->extractions = $extractions;
+        }
+        return null;
+    }
+
+    public function getExtractions()
+    {
+        return $this->extractions;
+    }
+}
