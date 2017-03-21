@@ -69,7 +69,11 @@ class XPathParser implements ParserContract
         $xpathNodes = $crawler->filterXPath($xpath);
         $extractions = [];
         foreach ($xpathNodes as $xpathNode) {
-            $extraction = $xpathNode->text();
+            if (trim($xpathNode->nodeValue)) {
+                $extraction = $xpathNode->nodeValue;
+            } else {
+                $extraction = $xpathNode->textContent;
+            }
             $extractions[] = $extraction;
         }
         return $extractions;
