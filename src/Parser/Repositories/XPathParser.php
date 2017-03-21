@@ -49,10 +49,10 @@ class XPathParser implements ParserContract
         if (isset($xpath) && !empty($xpath)) {
             if (is_array($xpath)) {
                 foreach ($xpath as $xp) {
-                    $extractions [] = $this->$this->__extract($xp);
+                    $this->extractions [] = $this->__extract($xp);
                 }
             } else {
-                $extractions [] = $this->__extract($xpath);
+                $this->extractions [] = $this->__extract($xpath);
             }
         }
         return null;
