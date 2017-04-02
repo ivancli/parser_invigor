@@ -68,6 +68,9 @@ class XPathParser implements ParserContract
         $crawler = new Crawler($this->content);
         $xpathNodes = $crawler->filterXPath($xpath);
         $extractions = [];
+        if (count($xpathNodes) == 0) {
+            return false;
+        }
         foreach ($xpathNodes as $xpathNode) {
             if ($xpathNode->nodeValue) {
                 $extraction = $xpathNode->nodeValue;
