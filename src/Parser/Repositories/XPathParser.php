@@ -44,7 +44,6 @@ class XPathParser implements ParserContract
      */
     public function extract()
     {
-
         $xpath = $this->options['xpath'];
         if (isset($xpath) && !empty($xpath)) {
             if (is_array($xpath)) {
@@ -52,7 +51,7 @@ class XPathParser implements ParserContract
                     $this->extractions [] = $this->__extract($xp);
                 }
             } else {
-                $this->extractions [] = $this->__extract($xpath);
+                $this->extractions = $this->__extract($xpath);
             }
         }
         return null;
