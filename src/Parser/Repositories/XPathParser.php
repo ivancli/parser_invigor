@@ -44,15 +44,14 @@ class XPathParser implements ParserContract
      */
     public function extract()
     {
-
         $xpath = $this->options['xpath'];
         if (isset($xpath) && !empty($xpath)) {
             if (is_array($xpath)) {
                 foreach ($xpath as $xp) {
-                    $extractions [] = $this->$this->__extract($xp);
+                    $this->extractions [] = $this->__extract($xp);
                 }
             } else {
-                $extractions [] = $this->__extract($xpath);
+                $this->extractions = $this->__extract($xpath);
             }
         }
         return null;
@@ -68,8 +67,15 @@ class XPathParser implements ParserContract
         $crawler = new Crawler($this->content);
         $xpathNodes = $crawler->filterXPath($xpath);
         $extractions = [];
+        if (count($xpathNodes) == 0) {
+            return false;
+        }
         foreach ($xpathNodes as $xpathNode) {
-            $extraction = $xpathNode->text();
+            if ($xpathNode->nodeValue) {
+                $extraction = $xpathNode->nodeValue;
+            } else {
+                $extraction = $xpathNode->textContent;
+            }
             $extractions[] = $extraction;
         }
         return $extractions;
