@@ -31,4 +31,10 @@ interface ParserContract
      * @return mixed
      */
     public function extract();
+
+    /**
+     * get extracted data
+     * @return mixed
+     */
+    public function getExtractions();
 }
