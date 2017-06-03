@@ -89,11 +89,11 @@ class MultipleItemParser implements ParserContract
                 }
             }
         } else {
-            $arrayConf = $this->options->filter(function ($option) {
+            $arrayConfs = $this->options->filter(function ($option) {
                 return $option->element == 'ARRAY';
-            })->first();
+            });
             /*check array configuration to locate property in $item */
-            if (!is_null($arrayConf)) {
+            foreach ($arrayConfs as $arrayConf) {
                 $array = $arrayConf->value;
                 $levels = explode('.', $array);
                 $attribute = $content;
@@ -102,20 +102,21 @@ class MultipleItemParser implements ParserContract
                         if (isset($attribute->$key)) {
                             $attribute = $attribute->$key;
                         } else {
-                            return false;
+                            continue;
                         }
                     } elseif (is_array($attribute)) {
                         if (array_has($attribute, $key)) {
                             $attribute = array_get($attribute, $key);
                         } else {
-                            return false;
+                            continue;
                         }
                     }
                 }
-                $this->extractions[] = $attribute;
+                if($attribute != $content){
+                    $this->extractions[] = $attribute;
+                }
             }
         }
-
         return $this->extractions;
     }
 
