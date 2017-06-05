@@ -68,6 +68,9 @@ class MultipleItemParser implements ParserContract
                 }
             }
         }
+        if(count($counter) == 0){
+            return null;
+        }
 
         $key = array_first(array_keys($counter, max($counter)));
 
