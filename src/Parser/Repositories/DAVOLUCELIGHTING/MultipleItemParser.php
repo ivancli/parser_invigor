@@ -59,25 +59,55 @@ class MultipleItemParser implements ParserContract
             return $option->element == 'OPTION_VALUE';
         })->pluck('value');
 
-        $counter = [];
-        foreach ($optionValues as $optionValue) {
-            preg_match_all('#variants\[(\d+?)\]\[1\]\[\d+\]=' . $optionValue . ';#', $this->content, $matches);
-            if (isset($matches[1])) {
-                foreach ($matches[1] as $match) {
-                    $counter[$match] = (!isset($counter[$match])) ? 1 : $counter[$match] + 1;
+        $extractions = [];
+
+        preg_match('#var price=(.*?);#', $this->content, $matches);
+        $basePrice = 0;
+        if (isset($matches[1])) {
+            $basePrice = $matches[1];
+        }
+        unset($matches);
+
+        preg_match("#modifiers\[(\d+)\]#", $this->content, $matches);
+
+        /* has optional items (charges additional fees)*/
+        /* e.g.
+         * bulb by itself $30
+         * bulb with dimmable driver + $25 ($55 total)
+         */
+        if (count($matches) > 0) {
+            unset($matches);
+            foreach ($optionValues as $optionValue) {
+                preg_match("#modifiers\[(\d+)\]\[$optionValue\]=\[(.*?),'\\$',\{\}\];#", $this->content, $matches);
+                if (isset($matches[2])) {
+                    $extractions[] = $basePrice + $matches[2];
                 }
             }
-        }
-        if(count($counter) == 0){
-            return null;
-        }
+        } else {
+            /* item itself has different price from other options (different price as a whole) */
+            /* e.g.
+             * color white - $30
+             * color warm white - $35
+             */
+            $counter = [];
+            foreach ($optionValues as $optionValue) {
+                preg_match_all('#variants\[(\d+?)\]\[1\]\[\d+\]=' . $optionValue . ';#', $this->content, $matches);
+                if (isset($matches[1])) {
+                    foreach ($matches[1] as $match) {
+                        $counter[$match] = (!isset($counter[$match])) ? 1 : $counter[$match] + 1;
+                    }
+                }
+            }
+            if (count($counter) == 0) {
+                return null;
+            }
 
-        $key = array_first(array_keys($counter, max($counter)));
+            $key = array_first(array_keys($counter, max($counter)));
 
-        preg_match('#variants\[' . $key . '\]=\[\[(.*?),#', $this->content, $matches);
-        $extractions = [];
-        if (isset($matches[1])) {
-            $extractions [] = $matches[1];
+            preg_match('#variants\[' . $key . '\]=\[\[(.*?),#', $this->content, $matches);
+            if (isset($matches[1])) {
+                $extractions [] = $matches[1];
+            }
         }
         return $extractions;
     }
