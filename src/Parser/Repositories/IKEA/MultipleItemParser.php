@@ -12,7 +12,7 @@ use IvanCLI\Parser\Contracts\ParserContract;
  */
 class MultipleItemParser implements ParserContract
 {
-    const PRODUCT_DATA_REGEX = '#var jProductData \= (.*?)\;#';
+    const PRODUCT_DATA_REGEX = '#var jProductData \= \{\"product\"\:(.*?)\};#';
 
     protected $content;
     protected $options;
@@ -111,7 +111,6 @@ class MultipleItemParser implements ParserContract
             if (isset($matches[1])) {
                 $productInfo = json_decode($matches[1]);
                 if (!is_null($productInfo) && json_last_error() === JSON_ERROR_NONE) {
-                    $productInfo = $productInfo->product;
                     $this->attributes = $productInfo->attributes;
                     $this->products = $productInfo->items;
                 }
