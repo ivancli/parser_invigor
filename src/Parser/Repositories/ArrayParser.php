@@ -3,29 +3,26 @@
  * Created by PhpStorm.
  * User: ivan.li
  * Date: 20/06/2017
- * Time: 10:00 AM
+ * Time: 10:51 AM
  */
 
-namespace IvanCLI\Parser\Repositories\TARGET;
+namespace IvanCLI\Parser\Repositories;
 
 
 use IvanCLI\Parser\Contracts\ParserContract;
 
-class APIParser implements ParserContract
+class ArrayParser implements ParserContract
 {
-
     protected $content;
     protected $options;
     protected $extractions = [];
 
     protected $productInfo;
 
-    const LD_JSON_XPATH = '//script[@type="application/ld+json"]';
-
     /**
      * set content property
      * @param $content
-     * @return mixed
+     * @return void
      */
     public function setContent($content)
     {
@@ -35,7 +32,7 @@ class APIParser implements ParserContract
     /**
      * set options property needed for extraction.
      * @param $options
-     * @return mixed
+     * @return void
      */
     public function setOptions($options)
     {
@@ -50,12 +47,12 @@ class APIParser implements ParserContract
     {
         $this->__getProductInfo();
 
-        $arrayConf = $this->options->filter(function ($option) {
+        $arrayConfs = $this->options->filter(function ($option) {
             return $option->element == 'ARRAY';
-        })->first();
+        });
 
         /*check array configuration to locate property in $item */
-        if (!is_null($arrayConf)) {
+        foreach ($arrayConfs as $arrayConf) {
             $array = $arrayConf->value;
             $levels = explode('.', $array);
             $attribute = $this->productInfo;
@@ -75,16 +72,10 @@ class APIParser implements ParserContract
                 }
             }
             $this->extractions[] = $attribute;
-            return $this->extractions;
         }
-
-        return null;
+        return $this->extractions;
     }
 
-    /**
-     * get extracted data
-     * @return mixed
-     */
     public function getExtractions()
     {
         return $this->extractions;
