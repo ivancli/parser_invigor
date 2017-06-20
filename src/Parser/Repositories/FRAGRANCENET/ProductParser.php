@@ -18,7 +18,7 @@ class ProductParser implements ParserContract
     protected $options;
     protected $extractions = [];
 
-    protected $productInfo;
+    protected $products;
 
     const LD_JSON_XPATH = '//script[@type="application/ld+json"]';
 
@@ -54,8 +54,8 @@ class ProductParser implements ParserContract
         if (!is_null($skuConf)) {
             $sku = $skuConf->value;
             $this->__getProductInfo();
-            if (isset($this->productInfo) && is_array($this->productInfo)) {
-                $matchedProducts = array_filter($this->productInfo, function ($product) use ($sku) {
+            if (isset($this->products) && is_array($this->products)) {
+                $matchedProducts = array_filter($this->products, function ($product) use ($sku) {
                     return $product->sku == $sku;
                 });
                 $matchedProduct = array_first($matchedProducts);
@@ -110,7 +110,6 @@ class ProductParser implements ParserContract
             $crawler = new Crawler($this->content);
             $xpathNodes = $crawler->filterXPath(self::LD_JSON_XPATH);
             $productInfo = null;
-            dump($xpathNodes);
             foreach ($xpathNodes as $xpathNode) {
                 if ($xpathNode->nodeValue) {
                     $productInfo = $xpathNode->nodeValue;
