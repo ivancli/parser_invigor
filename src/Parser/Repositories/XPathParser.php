@@ -64,19 +64,21 @@ class XPathParser implements ParserContract
 
     private function __extract($xpath)
     {
-        $crawler = new Crawler($this->content);
-        $xpathNodes = $crawler->filterXPath($xpath);
         $extractions = [];
-        if (count($xpathNodes) == 0) {
-            return false;
-        }
-        foreach ($xpathNodes as $xpathNode) {
-            if ($xpathNode->nodeValue) {
-                $extraction = $xpathNode->nodeValue;
-            } else {
-                $extraction = $xpathNode->textContent;
+        if(!is_null($this->content) && $this->content != false){
+            $crawler = new Crawler($this->content);
+            $xpathNodes = $crawler->filterXPath($xpath);
+            if (count($xpathNodes) == 0) {
+                return false;
             }
-            $extractions[] = $extraction;
+            foreach ($xpathNodes as $xpathNode) {
+                if ($xpathNode->nodeValue) {
+                    $extraction = $xpathNode->nodeValue;
+                } else {
+                    $extraction = $xpathNode->textContent;
+                }
+                $extractions[] = $extraction;
+            }
         }
         return $extractions;
     }
