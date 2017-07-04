@@ -6,7 +6,7 @@
  * Time: 11:38 AM
  */
 
-namespace IvanCLI\Parser\Repositories\WILDSECRET;
+namespace IvanCLI\Parser\Repositories\WILDSECRETS;
 
 
 use IvanCLI\Parser\Contracts\ParserContract;
