@@ -69,6 +69,8 @@ class ArrayParser implements ParserContract
                     } else {
                         return false;
                     }
+                } else {
+                    return false;
                 }
             }
             $this->extractions[] = $attribute;
