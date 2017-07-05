@@ -2,16 +2,18 @@
 /**
  * Created by PhpStorm.
  * User: ivan.li
- * Date: 20/06/2017
- * Time: 10:51 AM
+ * Date: 5/07/2017
+ * Time: 5:45 PM
  */
 
-namespace IvanCLI\Parser\Repositories;
+namespace IvanCLI\Parser\Repositories\COLES;
 
 
 use IvanCLI\Parser\Contracts\ParserContract;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
 
-class ArrayParser implements ParserContract
+class PriceParser implements ParserContract
 {
     protected $content;
     protected $options;
@@ -50,7 +52,6 @@ class ArrayParser implements ParserContract
         $arrayConfs = $this->options->filter(function ($option) {
             return $option->element == 'ARRAY';
         });
-
         /*check array configuration to locate property in $item */
         foreach ($arrayConfs as $arrayConf) {
             $array = $arrayConf->value;
@@ -80,6 +81,9 @@ class ArrayParser implements ParserContract
             if ($valid == true) {
                 $this->extractions[] = $attribute;
             }
+        }
+        foreach ($this->extractions as $index => $extraction) {
+            $this->extractions[$index] = number_format(floatval($extraction), 2);
         }
         return $this->extractions;
     }
