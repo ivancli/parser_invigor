@@ -11,7 +11,7 @@ namespace IvanCLI\Parser\Repositories\WILDSECRETS;
 
 use IvanCLI\Parser\Contracts\ParserContract;
 
-class PriceParser implements ParserContract
+class ProductParser implements ParserContract
 {
     protected $content;
     protected $options;
