@@ -50,10 +50,12 @@ class StandardPriceParser implements ParserContract
         foreach ($xpathConfs as $xpathConf) {
             $xp = $xpathConf->value;
             $extractions = $this->__extract($xp);
-            foreach ($extractions as $index => $extraction) {
-                $extractions[$index] = number_format(floatval($extraction), 2);
+            if(is_array($extractions)){
+                foreach ($extractions as $index => $extraction) {
+                    $extractions[$index] = number_format(floatval($extraction), 2);
+                }
+                $this->extractions = $extractions;
             }
-            $this->extractions = $extractions;
         }
         return null;
     }
