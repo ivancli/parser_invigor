@@ -58,7 +58,7 @@ class MultipleItemParser implements ParserContract
             $this->__getProductInfo();
             if (!is_null($this->productInfo)) {
                 $matchedProductOption = array_first(array_filter($this->productInfo, function ($productOption) use ($optionId) {
-                    return isset($productOption->variation_id) && $productOption->variation_id == $optionId;
+                    return isset($productOption->sku) && $productOption->sku == $optionId;
                 }));
 
 
